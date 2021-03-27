@@ -1,0 +1,94 @@
+{
+	"name": "custom.remote.python.calculated_metrics",
+	"version": "0.1",
+	"type": "python",
+	"entity": "CUSTOM_DEVICE",
+	"metricGroup": "tech.Example_Service",
+	"technologies": [
+		"Custom Technology"
+	],
+	"favicon": "https://lh3.googleusercontent.com/gN6iBKP1b2GTXZZoCxhyXiYIAh8QJ_8xzlhEK6csyDadA4GdkEdIEy9Bc8s5jozt1g=w300",
+	"source": {
+		"package": "calculated_metrics",
+		"className": "Generator",
+		"install_requires": ["requests"],
+		"activation": "Remote"
+	},
+	"metrics": [],
+	"properties": [
+		{
+			"key": "dt_server_url",
+			"type": "String",
+			"defaultValue": "https://xxxxxxx.live.dynatrace.com"
+		},
+		{
+			"key": "api_token",
+			"type": "Password",
+			"defaultValue": ""
+		},
+		{
+			"key": "inputs",
+			"type": "Textarea",
+			"defaultValue": "calc:service.numberoffindjourneys\ncalc:service.numberoffindlocations"
+		},
+		{
+			"key": "formula",
+			"type": "String",
+			"defaultValue": "(A/B)*100"
+		},
+		{
+			"key": "output",
+			"type": "String",
+			"defaultValue": "ratio.sample"
+		},
+		{
+			"key": "debug",
+			"type": "Dropdown",
+			"dropdownValues": [
+				"WARNING",
+				"INFO",
+				"DEBUG"
+			]
+		}
+	],
+	"configUI": {
+		"displayName": "Calculated Metrics",
+		"properties": [
+			{
+				"key": "dt_server_url",
+				"displayName": "URL of the Dynatrace server to request",
+				"displayOrder": 1,
+				"displayHint": "URL of the Dynatrace server to request"
+			},
+			{
+				"key": "api_token",
+				"displayName": "API Token",
+				"displayOrder": 2,
+				"displayHint": "Token to access Dynatrace API"
+			},
+			{
+				"key": "inputs",
+				"displayName": "Newline separated metrics definitions",
+				"displayOrder": 3,
+				"displayHint": "Mandatory. Should contain the list of existin metrics to use as source"
+			},
+			{
+				"key": "formula",
+				"displayName": "Arithmetic expression",
+				"displayOrder": 4,
+				"displayHint": "Mandatory. Should contain the expression applied to the source metrics"
+			},
+			{
+				"key": "output",
+				"displayName": "Resulting metric",
+				"displayOrder": 5,
+				"displayHint": "Mandatory. Should contain the name of the metric to which the results will be applied"
+			},
+			{
+				"key": "debug",
+				"displayName": "Choose debug level",
+				"displayOrder": 6
+			}
+		]
+	}
+}
