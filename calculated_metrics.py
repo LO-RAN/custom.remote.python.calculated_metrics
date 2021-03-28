@@ -8,7 +8,7 @@ Note: It uses API v2 only. It does not create any device nor device related data
 
 Inputs will be : 
 - ordered list of 1 to 10 existing metric selectors 
-    Note: each selector will be assogned to a letter from A to J (first selector will be A, second will be B, ...)
+    Note: each selector will be assigned to a letter from A to J (first selector will be A, second will be B, ...)
 - formula (mathematical expression) to compute on the values retrieved for each provided selector, using placeholders in the form of letters from A to J.
     Example : "(A/B)*100"   
     Note: before evaluating the expression, A will be replace by the value found for the first provided selector, B for the second, ...
@@ -114,6 +114,8 @@ class Generator(RemoteBasePlugin):
 
         repls = {}
 
+        theExpression=self.formula
+
         # iterate over inputs
         # for each
         for input in self.inputs:
@@ -155,11 +157,11 @@ class Generator(RemoteBasePlugin):
 
         # replace all letters with corresponding values in the formula
         for r in repls:
-          self.formula = self.formula.replace(r, repls[r])
+          theExpression = theExpression.replace(r, repls[r])
 
         # compute the formula and handle errors
         try:
-            result = evaluate(self.formula)
+            result = evaluate(theExpression)
         except SyntaxError:
             # If the user enters an invalid expression
             logger.error("Invalid input expression syntax")
