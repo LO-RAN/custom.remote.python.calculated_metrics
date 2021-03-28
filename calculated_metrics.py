@@ -189,24 +189,3 @@ class Generator(RemoteBasePlugin):
         else:
             logging.debug(r.text)
 
-
-def main():
-  params={
-    "config":{
-        "dt_server_url": "https://ure00800.live.dynatrace.com",
-        "api_token": "6DZoDNw1Qrm7HFaU-3Drk",
-        "inputs": "calc:service.numberoffindjourneys\ncalc:service.numberoffindlocations",
-        "output": "ratio.sample",
-        "formula": "(A/B)*100",
-        "debug": "DEBUG"
-        }
-      }
-
-  g=Generator()
-
-  g.initialize(params)
-  g.query()
-
-if __name__ == "__main__":
-    # execute only if run as a script
-  main()
