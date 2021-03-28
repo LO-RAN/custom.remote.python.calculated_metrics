@@ -1,7 +1,28 @@
 """
- curl -X GET "https://ure00800.live.dynatrace.com/api/v2/metrics/query?metricSelector=calc%3Aservice.numberoffindlocations&resolution=1m&from=-2m" 
+
+The purpose of this plugin is to gather 1 to 10 metrics from Dynatrace, apply a formula on the retrieved values and push back the result as a new ingest.
+Being an ActiveGate plugin, it triggers every minute.
+
+Note: It uses API v2 only. It does not create any device nor device related data.
+
+
+Inputs will be : 
+- ordered list of 1 to 10 existing metric selectors 
+    Note: each selector will be assogned to a letter from A to J (first selector will be A, second will be B, ...)
+- formula (mathematical expression) to compute on the values retrieved for each provided selector, using placeholders in the form of letters from A to J.
+    Example : "(A/B)*100"   
+    Note: before evaluating the expression, A will be replace by the value found for the first provided selector, B for the second, ...
+
+
+
+Example API calls and responses, used as source material to build this plugin
+=============================================================================
+
+###  get metrics values for a given metrics, with a resolution of 1 minute, for the last 2 minutes (the last 1 inute would often provide no data)
+
+ curl -X GET "https://<CHANGE_ME>.live.dynatrace.com/api/v2/metrics/query?metricSelector=<CHANGE_ME>&resolution=1m&from=-2m" 
       -H "accept: application/json; charset=utf-8" 
-      -H "Authorization: Api-Token 6DZoDNw1Qrm7HFaU-3Drk"
+      -H "Authorization: Api-Token <CHANGE_ME>"
 
 OK=200 
 
@@ -10,15 +31,15 @@ OK=200
   "nextPageKey": null,
   "result": [
     {
-      "metricId": "calc:service.numberoffindlocations",
+      "metricId": "...",
       "data": [
         {
           "dimensions": [
-            "SERVICE-58FA85926F0D9BB9",
+            "...",
             "All requests"
           ],
           "dimensionMap": {
-            "dt.entity.service": "SERVICE-58FA85926F0D9BB9",
+            "dt.entity.service": "...",
             "Dimension": "All requests"
           },
           "timestamps": [
@@ -39,48 +60,12 @@ OK=200
 
 
 
-curl -X GET "https://ure00800.live.dynatrace.com/api/v2/metrics/query?metricSelector=calc%3Aservice.numberoffindjourneys&resolution=1m&from=-2m" 
-     -H "accept: application/json; charset=utf-8" 
-    -H "Authorization: Api-Token 6DZoDNw1Qrm7HFaU-3Drk"
 
-OK = 200
-
-     {
-  "totalCount": 1,
-  "nextPageKey": null,
-  "result": [
-    {
-      "metricId": "calc:service.numberoffindjourneys",
-      "data": [
-        {
-          "dimensions": [
-            "SERVICE-58FA85926F0D9BB9",
-            "All requests"
-          ],
-          "dimensionMap": {
-            "dt.entity.service": "SERVICE-58FA85926F0D9BB9",
-            "Dimension": "All requests"
-          },
-          "timestamps": [
-            1616766540000,
-            1616766600000,
-            1616766660000
-          ],
-          "values": [
-            42,
-            10,
-            null
-          ]
-        }
-      ]
-    }
-  ]
-}
-
+### post new data, providing metrics name, value and (optionally) timestamp
 
 curl -X POST "https://ure00800.live.dynatrace.com/api/v2/metrics/ingest" 
      -H "accept: */*" 
-     -H "Authorization: Api-Token 6DZoDNw1Qrm7HFaU-3Drk" 
+     -H "Authorization: Api-Token change_me" 
      -H "Content-Type: text/plain; charset=utf-8" 
      -d "ratio.sample 42 1616766540000"
 
