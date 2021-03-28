@@ -63,9 +63,9 @@ OK=200
 
 ### post new data, providing metrics name, value and (optionally) timestamp
 
-curl -X POST "https://ure00800.live.dynatrace.com/api/v2/metrics/ingest" 
+curl -X POST "https://<CHANGE_ME>.live.dynatrace.com/api/v2/metrics/ingest" 
      -H "accept: */*" 
-     -H "Authorization: Api-Token change_me" 
+     -H "Authorization: Api-Token <CHANGE_ME>" 
      -H "Content-Type: text/plain; charset=utf-8" 
      -d "ratio.sample 42 1616766540000"
 
