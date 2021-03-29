@@ -1,5 +1,6 @@
 # custom.remote.python.calculated_metrics
 Dynatrace ActiveGate extension generating values for a custom metric from a set of existing metrics and a formula (math expression).
+
 Prerequisites: deployed ActiveGate that can reach out to Server's API endpoints.
 
 - This extension does not work yet with dimensions. It was tested on simple, one dimension, metrics...
