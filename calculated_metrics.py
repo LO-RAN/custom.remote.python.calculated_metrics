@@ -1,6 +1,6 @@
 """
 
-The purpose of this plugin is to gather 1 to 10 metrics from Dynatrace, apply a formula on the retrieved values and push back the result as a new ingest.
+The purpose of this plugin is to gather 1 to 10 metrics from Dynatrace, apply an arithmetic expression on the retrieved values and push back the result as a new ingest.
 Being an ActiveGate plugin, it triggers every minute.
 
 Note: It uses API v2 only. It does not create any device nor device related data.
@@ -12,6 +12,7 @@ Inputs will be :
 - formula (mathematical expression) to compute on the values retrieved for each provided selector, using placeholders in the form of letters from A to J.
     Example : "(A/B)*100"   
     Note: before evaluating the expression, A will be replace by the value found for the first provided selector, B for the second, ...
+- name of the metrics to populate with the evaluation result.
 
 
 
@@ -87,6 +88,7 @@ logger = logging.getLogger(__name__)
 class Generator(RemoteBasePlugin):
 
     def initialize(self, **kwargs):
+
         config = kwargs['config']
         debugLogging = config["debug"]
 
@@ -106,18 +108,19 @@ class Generator(RemoteBasePlugin):
         self.output = config["output"]
         self.formula = config["formula"]
 
+
+
     def query(self, **kwargs):
+        
+        requests.packages.urllib3.disable_warnings()
 
         logger.setLevel(self.logging_level)
 
         letters="ABCDEFGHIJ"
-
         repls = {}
-
         theExpression=self.formula
 
         # iterate over inputs
-        # for each
         for input in self.inputs:
           # get data for input metrics
           r = requests.get(
@@ -130,7 +133,8 @@ class Generator(RemoteBasePlugin):
                           headers={
                             'Authorization': "Api-Token " + self.api_token, 
                             'accept': 'application/json; charset=utf-8'
-                            }
+                            },
+                          verify=False
                           )
 
           # error ?
@@ -138,16 +142,17 @@ class Generator(RemoteBasePlugin):
               logging.error(r.status_code, r.reason, r.text) 
               return
               
-          
           logging.debug(r.text)
           
+          # parse retrieved data as json
           jsonContent=json.loads(r.text)
 
-          value=""
+          # extract value from json structure
           try:
             #timestamp = jsonContent["result"][0]["data"][0]["timestamps"][0]
             value = jsonContent["result"][0]["data"][0]["values"][0]
             if(value is not None):
+              # build replacement set ( Letter, value )
               repls[letters[self.inputs.index(input)]]=str(value)
           except:
             logger.error("No value found for "+input)
@@ -180,7 +185,8 @@ class Generator(RemoteBasePlugin):
             data=self.output+" "+str(result),  #+" "+ timestamp,
             headers={
               'Authorization': "Api-Token " + self.api_token,
-              'Content-Type': 'text/plain; charset=utf-8'},
+              'Content-Type': 'text/plain; charset=utf-8'
+              },
             verify=False
             )
 
