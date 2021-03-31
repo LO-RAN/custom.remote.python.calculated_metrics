@@ -25,7 +25,7 @@ Inputs will be :
 - formula (mathematical expression) to compute on the values retrieved for each provided selector, using placeholders in the form of letters from A to J.
     Example : "(A/B)*100"   
   *  Before evaluating the expression, A will be replace by the value found for the first provided selector, B for the second, ...
-- name of the metrics to populate with the result of the evaluation.
+- name of the metrics to populate with the evaluation result.
 
 ## Inputs
 ![Example inputs](images/sample_inputs.png)
