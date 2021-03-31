@@ -1,8 +1,0 @@
-{
-    "dt_server_url": "https://ure00800.live.dynatrace.com",
-    "api_token": "change_me",
-    "inputs": "calc:service.numberoffindjourneys\ncalc:service.numberoffindlocations",
-    "output": "ratio.sample",
-    "formula": "(A/B)*100",
-    "debug": "DEBUG"
-}
