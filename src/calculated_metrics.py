@@ -139,10 +139,10 @@ class Generator(RemoteBasePlugin):
 
           # error ?
           if(r.status_code != 200):
-              logging.error(r.status_code, r.reason, r.text) 
+              logger.error(r.status_code, r.reason, r.text) 
               return
               
-          logging.debug(r.text)
+          logger.debug(r.text)
           
           # parse retrieved data as json
           jsonContent=json.loads(r.text)
@@ -153,6 +153,7 @@ class Generator(RemoteBasePlugin):
             value = jsonContent["result"][0]["data"][0]["values"][0]
             if(value is not None):
               # build replacement set ( Letter, value )
+              logger.info("Value retrieved : "+str(value))
               repls[letters[self.inputs.index(input)]]=str(value)
           except:
             logger.error("No value found for "+input)
@@ -177,6 +178,7 @@ class Generator(RemoteBasePlugin):
             logger.error(err)
             return
 
+        logger.info("Result : "+str(result))
 
 
         # send result to Dynatrace
@@ -192,8 +194,8 @@ class Generator(RemoteBasePlugin):
 
         # error ?
         if(r.status_code != 202):
-            logging.error(r.status_code, r.reason, r.text) 
+            logger.error(r.status_code, r.reason, r.text) 
             return
         else:
-            logging.debug(r.text)
+            logger.debug(r.text)
 
