@@ -1,5 +1,13 @@
 # custom.remote.python.calculated_metrics
 
+## (2021-06-17) This extension is not needed anymore : this feature is now available out of the box in Dynatrace: 
+
+example : 
+(calc:service.numberoffindlocations)/(calc:service.numberoffindjourneys)*(100)
+
+![OOTB feature](images/ootb_feature.png)
+
+
 ## Disclaimer
 THIS IS NOT PART OF THE DYNATRACE PRODUCT. This was meant to be a demonstration app, but proved to have some actual utility. It is, however, provided without any representations, warranties, or formal support whatsoever.
 
@@ -32,4 +40,3 @@ Inputs will be :
 
 ## Outputs
 ![Example outputs](images/sample_outputs.png)
-
