@@ -168,6 +168,10 @@ class Generator(RemoteBasePlugin):
         # compute the formula and handle errors
         try:
             result = evaluate(theExpression)
+            # special case where the expression resolves as a boolean value
+            if(result==True or result==False):
+              # convet the value to 1 or 0
+              result=int(result)
         except SyntaxError:
             # If the user enters an invalid expression
             logger.error("Invalid input expression syntax")
